@@ -9,18 +9,13 @@ class Game(object):
         clock=pygame.time.Clock()
         image = pygame.image.load('background.png')
         sprites=pygame.sprite.Group()
+        mobs = pygame.sprite.Group()
         self.player=Player(sprites)
-        #self.walls=pygame.sprite.Group()
-        #tree=pygame.image.load('python.png')
+        for i in range(4):
+            self.m=Mob(sprites)
+            
         image_x=0
         image_y=0
-        #for x in range(100,700,32):
-         #   for y in range(0,640,65):
-          #      if x in (100,700-32) or y in (0,640-32):
-           #         wall=pygame.sprite.Sprite(self.walls)
-            #        wall.image=tree
-             #       wall.rect=pygame.rect.Rect((x,y),tree.get_size())
-        #sprites.add(self.walls)
         while 1:
             dt=clock.tick(FPS)
 
@@ -43,7 +38,6 @@ class Game(object):
             sprites.draw(screen)
             #screen.blit(image1,(image1_x,image1_y))
             pygame.display.flip()
-        sprites.add(self.walls)
 class Player(pygame.sprite.Sprite):
     def __init__(self,*groups):
         super(Player,self).__init__(*groups)
@@ -67,10 +61,10 @@ class Player(pygame.sprite.Sprite):
             self.rect.x=140
         if (self.rect.x > 670):
             self.rect.x=670
-        if (self.rect.y<0):
-            self.rect.y=0
-        if (self.rect.y>570):
-            self.rect.y=570
+        if (self.rect.top<0):
+            self.rect.top=0
+        if (self.rect.bottom>reso_y):
+            self.rect.bottom=reso_y
 
         #if key[pygame.K_SPACE]:
          #   self.dy = -400
@@ -79,30 +73,20 @@ class Player(pygame.sprite.Sprite):
         #self.rect.y +=self.dy * dt
         #new = self.rect
         #self.resting = False  #Gravity
-       # for cell in pygame.sprite.spritecollide(self,game.walls,False):
-    #    self.rect=last
-        #    cell = cell.rect
-         #   if last.right <= cell.left and new.right > cell.left :
-         #       new.right = cell.left
-          #  if last.left >= cell.right and new.left < cell.right :
-           #     new.left = cell.right
-            #if last.bottom <= cell.top and new.bottom > cell.top :
-                #self.resting = True
-             #   new.bottom = cell.top
-              #  self.dy =0
-            #if last.top >= cell.bottom and new.top < cell.bottom :
-            #new.top = cell.bottom
-             #   self.dy =0
 class Mob(pygame.sprite.Sprite):
     def __init__(self,*groups):
         super(Mob,self).__init__(*groups)
-        self.image = pygame.image.load('python.png')
-        self.rect = pygame.rect.Rect((random.randrange(reso_x-self.rect.width,random.randrange(-100,-40))),self.image.get_size())
-        self.dy = 0?!?jedi=0, ?!?                   (param start, *_*param stop=None*_*, param step=1, param _int=int) ?!?jedi?!?
-        self.speedy = random.randrange(1,0)
+        self.image = pygame.image.load('obst.png')
+        self.rect = pygame.rect.Rect((random.randrange(140,670),random.randrange(-100,-40)),self.image.get_size())
+        self.dy = 0
+        self.speedy = random.randrange(10,15)
 
     def update(self,dt,game):
-        self.rect.y += speed*dt
+        self.rect.y += self.speedy
+        if self.rect.top > reso_y + 10 :
+            self.rect.x = random.randrange(140,670)
+            self.rect.y = random.randrange(-100,-40)
+            self.speedy = random.randrange(10,15)
  
 if __name__=='__main__':
     pygame.init()
