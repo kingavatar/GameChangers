@@ -1,3 +1,4 @@
+from moviepy.editor import VideoFileClip,CompositeVideoClip,concatenate_videoclips
 import pygame
 import random
 import os,sys
@@ -23,7 +24,7 @@ class Game(object):
             text_rect = text_surface.get_rect()
             text_rect.midtop = (x,y)
             surf.blit(text_surface,text_rect)
-        for i in range(8):
+        for i in range(6):
             self.m=Mob(sprites,mobs)
         running=True
         image_x=0
@@ -41,7 +42,7 @@ class Game(object):
 
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:
-                    running=False
+                    pygame.quit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         run = False
@@ -50,7 +51,7 @@ class Game(object):
                     if button2.collidepoint(pos) and pygame.mouse.get_pressed()[0]:
                         run = True
                     if button1.collidepoint(pos) and pygame.mouse.get_pressed()[0]:
-                        running = False
+                        pygame.quit()
                 key = pygame.key.get_pressed() 
                 if key[pygame.K_SPACE]:
                     shoot(self.player)
@@ -63,7 +64,12 @@ class Game(object):
                     self.m=Mob(sprites,mobs)
                 hits = pygame.sprite.spritecollide(self.player,mobs,False,pygame.sprite.collide_circle)
                 if hits:
-                    running=False
+                    clip5 = VideoFileClip('./mp4/planet.mp4')
+                    video =clip5.resize((1000,700))
+                    video.preview()
+                    pygame.quit()
+            if score > 35 :
+                running = False
             screen.blit(image,(0,0))
             #screen.blit(image,(image_x,image_y))
             sprites.draw(screen)
@@ -75,7 +81,6 @@ class Game(object):
                 screen.blit(resume,resume_rect)
 
             pygame.display.flip()
-        pygame.quit()
 class Player(pygame.sprite.Sprite):
     def __init__(self,*groups):
         super(Player,self).__init__(*groups)

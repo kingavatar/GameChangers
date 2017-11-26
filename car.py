@@ -1,4 +1,5 @@
 import pygame
+from moviepy.editor import VideoFileClip,CompositeVideoClip,concatenate_videoclips
 import random
 import os,sys
 from os import path
@@ -8,6 +9,8 @@ reso_x=840
 reso_y=640
 FPS=30
 class Game(object):
+    def __init__(self):
+        self.score =0
     def main(self,screen):
         clock=pygame.time.Clock()
         image = pygame.image.load(path.join(img_dir,'background.png'))
@@ -23,13 +26,14 @@ class Game(object):
             text_rect.midtop = (x,y)
             surf.blit(text_surface,text_rect)
 
-        for i in range(6):
-            self.m=Mob(sprites,mobs)
+        for i in range(2):
+            self.m=Mob(path.join(img_dir,'obst1.png'),sprites,mobs)
+            self.n=Mob(path.join(img_dir,'obst2.png'),sprites,mobs)
         running=True
         image_x=0
         image_y=0
         times_last=pygame.time.get_ticks()
-        score=0
+        self.score=0
         run = True
         button1 = pygame.draw.rect(screen, (255, 0, 0),(205, 265, 130, 80))
         button2 = pygame.draw.rect(screen, (255, 0, 0),(510, 300, 110, 75))
@@ -39,7 +43,7 @@ class Game(object):
 
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:
-                    running=False
+                    pygame.quit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         run = False
@@ -48,7 +52,7 @@ class Game(object):
                     if button2.collidepoint(pos) and pygame.mouse.get_pressed()[0]:
                         run = True
                     if button1.collidepoint(pos) and pygame.mouse.get_pressed()[0]:
-                        running = False
+                        pygame.quit()
  
             ''''key = pygame.key.get_pressed()
             if key[pygame.K_LEFT]:
@@ -64,22 +68,28 @@ class Game(object):
                 times=pygame.time.get_ticks()
                 if times - times_last >1000:
                     times_last = times
-                    score+=1
+                    self.score+=1
                 sprites.update(dt/1000.,self)
                 hits = pygame.sprite.spritecollide(self.player,mobs,False)
                 if hits:
-                    running=False
+                    clip5 = VideoFileClip('./mp4/planet.mp4')
+                    video =clip5.resize((1000,700))
+                    video.preview()
+                    pygame.quit()
+
             screen.blit(image,(0,0))
             #screen.blit(image,(image_x,image_y))
             sprites.draw(screen)
-            draw_text(screen,"Score : "+str(score),18,780,20)
+            draw_text(screen,"Score : "+str(self.score),18,780,20)
+            if self.score > 20:
+                running = False
             if run == False:
                 resume_rect=resume.get_rect()
                 resume_rect.center=(reso_x/2,reso_y/2)
                 screen.blit(resume,resume_rect)
             #screen.blit(image1,(image1_x,image1_y))
             pygame.display.flip()
-        pygame.quit()
+        #pygame.quit()
 class Player(pygame.sprite.Sprite):
     def __init__(self,*groups):
         super(Player,self).__init__(*groups)
@@ -116,9 +126,9 @@ class Player(pygame.sprite.Sprite):
         #new = self.rect
         #self.resting = False  #Gravity
 class Mob(pygame.sprite.Sprite):
-    def __init__(self,*groups):
+    def __init__(self,image,*groups):
         super(Mob,self).__init__(*groups)
-        self.image = pygame.image.load(path.join(img_dir,'obst.png'))
+        self.image = pygame.image.load(image)
         self.rect = pygame.rect.Rect((random.randrange(140,670),random.randrange(-100,-40)),self.image.get_size())
         self.dy = 0
         self.speedy = random.randrange(10,15)
