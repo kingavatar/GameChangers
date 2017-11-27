@@ -131,14 +131,14 @@ class Mob(pygame.sprite.Sprite):
         self.image = pygame.image.load(image)
         self.rect = pygame.rect.Rect((random.randrange(140,670),random.randrange(-100,-40)),self.image.get_size())
         self.dy = 0
-        self.speedy = random.randrange(10,15)
+        self.speedy = random.randrange(10,11)
 
     def update(self,dt,game):
         self.rect.y += self.speedy
         if self.rect.top > reso_y + 10 :
             self.rect.x = random.randrange(140,670)
             self.rect.y = random.randrange(-100,-40)
-            self.speedy = random.randrange(10,15)
+            self.speedy = random.randrange(10,11)
 
  
 if __name__=='__main__':

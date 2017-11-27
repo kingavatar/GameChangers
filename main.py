@@ -62,10 +62,10 @@ if run == True:
     clip4= concatenate_videoclips([clip4,clip4])
     video =clip4.resize((1280,720))
     video.preview()
-    clip5 = VideoFileClip('./mp4/sunflare2.mp4')
+    '''clip5 = VideoFileClip('./mp4/sunflare2.mp4')
     clip5= concatenate_videoclips([clip5,clip5,clip5])
     video =clip5.resize((1280,720))
-    video.preview()
+    video.preview()'''
     clip6 = VideoFileClip('./mp4/road.mp4')
     clip6= concatenate_videoclips([clip6,clip6,clip6])
     video =clip6.resize((1280,720))
@@ -99,10 +99,10 @@ if run == True:
     video =clip1.resize((1280,720))
     video.preview()
 
-    clip1 = VideoFileClip('./mp4/energy.mp4')
+    '''clip1 = VideoFileClip('./mp4/energy.mp4')
     clip1= concatenate_videoclips([clip1,clip1,clip1,clip1])
     video =clip1.resize((720,1280))
-    video.preview()
+    video.preview()'''
 
     clip1 = VideoFileClip('./mp4/warpspeed.mp4')
     clip1= concatenate_videoclips([clip1,clip1,clip1,clip1])
@@ -118,10 +118,10 @@ if run == True:
     video =clip1.resize((800,800))
     video.preview()
 
-    clip1 = VideoFileClip('./mp4/stars.mp4')
+    '''clip1 = VideoFileClip('./mp4/stars.mp4')
     clip1= concatenate_videoclips([clip1,clip1])
     video =clip1.resize((1280,720))
-    video.preview()
+    video.preview()'''
 
     clip1 = VideoFileClip('./mp4/aliean.mp4')
     clip1= concatenate_videoclips([clip1,clip1])

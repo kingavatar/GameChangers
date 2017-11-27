@@ -79,7 +79,7 @@ class Game(object):
                     hits = pygame.sprite.groupcollide(boss,bullet,True,True)
                     for hit in hits:
                         score +=5
-                if score > 103 :
+                if score > 90 :
                     running = False
 
 
