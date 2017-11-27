@@ -1,8 +1,8 @@
-from moviepy.editor import VideoFileClip,CompositeVideoClip,concatenate_videoclips
+from moviepy.editor import VideoFileClip,CompositeVideoClip,concatenate_videoclips#For Gameover Video
 import pygame
 import random
 import os,sys
-from os import path
+from os import path#For image loading path
 img_dir = path.join(path.dirname(__file__),'img')
 
 reso_x=1000
@@ -11,14 +11,14 @@ FPS=30
 class Game(object):
     def main(self,screen):
         clock=pygame.time.Clock()
-        image = pygame.image.load(path.join(img_dir,'stars.png')).convert()
-        sprites=pygame.sprite.Group()
-        mobs = pygame.sprite.Group()
-        bullet = pygame.sprite.Group()
+        image = pygame.image.load(path.join(img_dir,'stars.png')).convert()#Background
+        sprites=pygame.sprite.Group()#All sprites which are drawn 
+        mobs = pygame.sprite.Group()#All sprites which disappear after hitting bullets
+        bullet = pygame.sprite.Group()#all bullet sprites
         self.player=Player(sprites)
-        resume = pygame.image.load(path.join(img_dir,'resume.png')).convert_alpha()
+        resume = pygame.image.load(path.join(img_dir,'resume.png')).convert_alpha()#Resume screen
         #font_name = pygame.font.match_font('arial')
-        def draw_text(surf,text,size,x,y):
+        def draw_text(surf,text,size,x,y):#For writing text on screen
             font = pygame.font.Font('kenvector_future.ttf',size)
             text_surface = font.render(text,True,(255,255,255))
             text_rect = text_surface.get_rect()
@@ -34,7 +34,7 @@ class Game(object):
             bullet1=Bullets(player.rect.left+14,player.rect.top,sprites,bullet)
             bullet2=Bullets(player.rect.right-14,player.rect.top,sprites,bullet)
         run = True
-        button1 = pygame.draw.rect(screen, (255, 0, 0),(285, 355, 130, 80))
+        button1 = pygame.draw.rect(screen, (255, 0, 0),(285, 355, 130, 80))#Mouse Buttons positions
         button2 = pygame.draw.rect(screen, (255, 0, 0),(590, 360, 110, 75))
 
         while running:
@@ -46,7 +46,7 @@ class Game(object):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         run = False
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN: # Mouse buttons action
                     pos = pygame.mouse.get_pos()
                     if button2.collidepoint(pos) and pygame.mouse.get_pressed()[0]:
                         run = True
@@ -58,30 +58,30 @@ class Game(object):
             if run == True:
                 #screen.fill((200,200,200))
                 sprites.update(dt/1000.,self)
-                hits = pygame.sprite.groupcollide(mobs,bullet,True,True)
+                hits = pygame.sprite.groupcollide(mobs,bullet,True,True)# bullets action
                 for hit in hits:
-                    score += 1
+                    score += 1 # Score updation
                     self.m=Mob(sprites,mobs)
                 hits = pygame.sprite.spritecollide(self.player,mobs,False,pygame.sprite.collide_circle)
-                if hits:
+                if hits:#Gameover Screen
                     clip5 = VideoFileClip('./mp4/planet.mp4')
                     video =clip5.resize((1000,700))
                     video.preview()
                     pygame.quit()
-            if score > 35 :
+            if score > 35 :#For moving onto next game
                 running = False
             screen.blit(image,(0,0))
             #screen.blit(image,(image_x,image_y))
-            sprites.draw(screen)
-            draw_text(screen,"Score : "+str(score),18,900,20)
+            sprites.draw(screen)# for drawing sprites
+            draw_text(screen,"Score : "+str(score),18,900,20) #for displaying text
             #screen.blit(image1,(image1_x,image1_y))
-            if run == False:
+            if run == False:# resume screen
                 resume_rect=resume.get_rect()
                 resume_rect.center=(reso_x/2,reso_y/2)
                 screen.blit(resume,resume_rect)
 
             pygame.display.flip()
-class Player(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite):#This class contains player sprite properties
     def __init__(self,*groups):
         super(Player,self).__init__(*groups)
         self.image = pygame.image.load(path.join(img_dir,'fighter.png'))
@@ -116,7 +116,7 @@ class Player(pygame.sprite.Sprite):
         #self.rect.y +=self.dy * dt
         #new = self.rect
         #self.resting = False  #Gravity
-class Mob(pygame.sprite.Sprite):
+class Mob(pygame.sprite.Sprite):#This contains Enemy sprite properties
     def __init__(self,*groups):
         super(Mob,self).__init__(*groups)
         self.image_orig = pygame.image.load(path.join(img_dir,'asteroid.png'))
@@ -129,7 +129,7 @@ class Mob(pygame.sprite.Sprite):
         self.rot=0
         self.rot_speed = random.randrange(-20,20)
         self.last_update = pygame.time.get_ticks()
-    def rotate(self):
+    def rotate(self): #For rotating asteroid 50ms 1 degree
         now = pygame.time.get_ticks()
         if now - self.last_update > 50 :
             self.last_update = now
@@ -145,9 +145,9 @@ class Mob(pygame.sprite.Sprite):
         self.rect.x += self.speedx
         if self.rect.top > reso_y + 10  :
             self.rect.x = random.randrange(140,670)
-            self.rect.y = random.randrange(-100,-40)
+            self.rect.y = random.randrange(-100,-40)#for spawwing above screen
             self.speedy = random.randrange(10,15)
-class Bullets(pygame.sprite.Sprite):
+class Bullets(pygame.sprite.Sprite): # Bullet properties
     def __init__(self,x,y,*groups):
         super(Bullets,self).__init__(*groups)
         self.image = pygame.image.load(path.join(img_dir,'laserRed.png'))
@@ -162,7 +162,7 @@ class Bullets(pygame.sprite.Sprite):
 
 
  
-if __name__=='__main__':
+if __name__=='__main__': # FOr running single name
     pygame.init()
     pygame.mixer.init()
     screen=pygame.display.set_mode((reso_x,reso_y))

@@ -1,8 +1,10 @@
 import pygame
-from moviepy.editor import VideoFileClip,CompositeVideoClip,concatenate_videoclips,TextClip
+from moviepy.editor import VideoFileClip,CompositeVideoClip,concatenate_videoclips,TextClip#For Gameover Video
+
 import random
 import os,sys
-from os import path
+from os import path#For image loading path
+
 img_dir = path.join(path.dirname(__file__),'img')
 
 reso_x=1000
@@ -11,11 +13,13 @@ FPS=30
 class Game(object):
     def main(self,screen):
         clock=pygame.time.Clock()
-        image = pygame.image.load(path.join(img_dir,'stars.png')).convert()
-        sprites=pygame.sprite.Group()
-        mobs = pygame.sprite.Group()
-        boss = pygame.sprite.Group()
-        bullet = pygame.sprite.Group()
+        image = pygame.image.load(path.join(img_dir,'stars.png')).convert()#Background
+        sprites=pygame.sprite.Group()#All sprites which are drawn 
+        mobs = pygame.sprite.Group()#All sprites which disappear after hitting bullets
+
+        boss = pygame.sprite.Group()# all BOss Class sprites
+        bullet = pygame.sprite.Group()#all bullet sprites
+#Same as Space.py
         self.player=Player(sprites)
         resume = pygame.image.load(path.join(img_dir,'resume.png')).convert_alpha()
         #font_name = pygame.font.match_font('arial')
@@ -70,7 +74,7 @@ class Game(object):
                 for hit in hits:
                     score += 1
 
-                if count < 200:
+                if count < 300:
                     hits = pygame.sprite.groupcollide(boss,bullet,False,True)
                     for hit in hits:
                         score+=2
@@ -79,7 +83,7 @@ class Game(object):
                     hits = pygame.sprite.groupcollide(boss,bullet,True,True)
                     for hit in hits:
                         score +=5
-                if score > 90 :
+                if score > 90 :#Boss defeating Condition 
                     running = False
 
 

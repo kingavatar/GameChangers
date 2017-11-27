@@ -1,32 +1,32 @@
 import pygame
-from moviepy.editor import VideoFileClip,CompositeVideoClip,concatenate_videoclips
+from moviepy.editor import VideoFileClip,CompositeVideoClip,concatenate_videoclips #This is for resume screen
 import random
 import os,sys
-from os import path
+from os import path #For folder accessing
 img_dir = path.join(path.dirname(__file__),'img')
 
-reso_x=840
+reso_x=840#Display dimensions
 reso_y=640
 FPS=30
-class Game(object):
+class Game(object):#Whole 
     def __init__(self):
         self.score =0
     def main(self,screen):
         clock=pygame.time.Clock()
-        image = pygame.image.load(path.join(img_dir,'background.png'))
-        sprites=pygame.sprite.Group()
-        mobs = pygame.sprite.Group()
+        image = pygame.image.load(path.join(img_dir,'background.png'))#BAckground
+        sprites=pygame.sprite.Group()#All Sprites which are to be drawn
+        mobs = pygame.sprite.Group()#all moving sprites to be kiled
         self.player=Player(sprites)
-        resume = pygame.image.load(path.join(img_dir,'resume.png')).convert_alpha()
+        resume = pygame.image.load(path.join(img_dir,'resume.png')).convert_alpha()#resume screen image
         #font_name = pygame.font.match_font('arial')
-        def draw_text(surf,text,size,x,y):
+        def draw_text(surf,text,size,x,y):#for writing score
             font = pygame.font.Font('kenvector_future.ttf',size)
             text_surface = font.render(text,True,(0,255,0))
             text_rect = text_surface.get_rect()
             text_rect.midtop = (x,y)
             surf.blit(text_surface,text_rect)
 
-        for i in range(2):
+        for i in range(2):#For Cars spawning
             self.m=Mob(path.join(img_dir,'obst1.png'),sprites,mobs)
             self.n=Mob(path.join(img_dir,'obst2.png'),sprites,mobs)
         running=True
@@ -35,11 +35,11 @@ class Game(object):
         times_last=pygame.time.get_ticks()
         self.score=0
         run = True
-        button1 = pygame.draw.rect(screen, (255, 0, 0),(205, 265, 130, 80))
+        button1 = pygame.draw.rect(screen, (255, 0, 0),(205, 265, 130, 80))#Mouse buttons
         button2 = pygame.draw.rect(screen, (255, 0, 0),(510, 300, 110, 75))
 
         while running:
-            dt=clock.tick(FPS)
+            dt=clock.tick(FPS)# for fps
 
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:
@@ -47,7 +47,7 @@ class Game(object):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         run = False
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN:#Resume screen action
                     pos = pygame.mouse.get_pos()
                     if button2.collidepoint(pos) and pygame.mouse.get_pressed()[0]:
                         run = True
@@ -68,29 +68,29 @@ class Game(object):
                 times=pygame.time.get_ticks()
                 if times - times_last >1000:
                     times_last = times
-                    self.score+=1
+                    self.score+=1 #Score gets counted
                 sprites.update(dt/1000.,self)
                 hits = pygame.sprite.spritecollide(self.player,mobs,False)
-                if hits:
-                    clip5 = VideoFileClip('./mp4/planet.mp4')
+                if hits:#If you losed
+                    clip5 = VideoFileClip('./mp4/planet.mp4')#Gameover Video
                     video =clip5.resize((1000,700))
                     video.preview()
                     pygame.quit()
 
-            screen.blit(image,(0,0))
+            screen.blit(image,(0,0)) #Background positioning
             #screen.blit(image,(image_x,image_y))
-            sprites.draw(screen)
+            sprites.draw(screen) #Sprites drawing
             draw_text(screen,"Score : "+str(self.score),18,780,20)
-            if self.score > 20:
+            if self.score > 20:#Next Game
                 running = False
-            if run == False:
+            if run == False:#REsume screen Action
                 resume_rect=resume.get_rect()
                 resume_rect.center=(reso_x/2,reso_y/2)
                 screen.blit(resume,resume_rect)
             #screen.blit(image1,(image1_x,image1_y))
             pygame.display.flip()
         #pygame.quit()
-class Player(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite):#Player class with required parameters
     def __init__(self,*groups):
         super(Player,self).__init__(*groups)
         self.image = pygame.image.load(path.join(img_dir,'python.png'))
@@ -125,7 +125,7 @@ class Player(pygame.sprite.Sprite):
         #self.rect.y +=self.dy * dt
         #new = self.rect
         #self.resting = False  #Gravity
-class Mob(pygame.sprite.Sprite):
+class Mob(pygame.sprite.Sprite):# Moving Enemies class with required parameters
     def __init__(self,image,*groups):
         super(Mob,self).__init__(*groups)
         self.image = pygame.image.load(image)
@@ -141,7 +141,7 @@ class Mob(pygame.sprite.Sprite):
             self.speedy = random.randrange(10,11)
 
  
-if __name__=='__main__':
+if __name__=='__main__':#If only Game is runned
     pygame.init()
     pygame.mixer.init()
     screen=pygame.display.set_mode((reso_x,reso_y))

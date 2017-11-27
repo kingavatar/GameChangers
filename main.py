@@ -90,7 +90,7 @@ if run == True:
     video.preview()
 
     clip1 = VideoFileClip('./mp4/cabin.mp4')
-    clip1= concatenate_videoclips([clip1,clip1,clip1,clip1])
+    clip1= concatenate_videoclips([clip1,clip1,clip1])
     video =clip1.resize((1280,720))
     video.preview()
 
@@ -99,10 +99,6 @@ if run == True:
     video =clip1.resize((1280,720))
     video.preview()
 
-    '''clip1 = VideoFileClip('./mp4/energy.mp4')
-    clip1= concatenate_videoclips([clip1,clip1,clip1,clip1])
-    video =clip1.resize((720,1280))
-    video.preview()'''
 
     clip1 = VideoFileClip('./mp4/warpspeed.mp4')
     clip1= concatenate_videoclips([clip1,clip1,clip1,clip1])
@@ -118,10 +114,6 @@ if run == True:
     video =clip1.resize((800,800))
     video.preview()
 
-    '''clip1 = VideoFileClip('./mp4/stars.mp4')
-    clip1= concatenate_videoclips([clip1,clip1])
-    video =clip1.resize((1280,720))
-    video.preview()'''
 
     clip1 = VideoFileClip('./mp4/aliean.mp4')
     clip1= concatenate_videoclips([clip1,clip1])
@@ -146,13 +138,10 @@ if run == True:
     clip1= concatenate_videoclips([clip1,clip1,clip1,clip1])
     video =clip1.resize((1280,720))
     video.preview()
-    runnings=True
-    while runnings:
-        reso_x=1280
-        reso_y=720
-        screen=pygame.display.set_mode((reso_x,reso_y))
-        screen.fill((0,0,0))
-
+    
+    clip1 = VideoFileClip('./mp4/ending.mp4')
+    video =clip1.resize((1000,900))
+    video.preview()
 
 
 pygame.quit()
