@@ -1,0 +1,3 @@
+pygame==1.9.6
+moviepy==1.0.3
+imageio==2.4.1
